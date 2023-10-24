@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dsmovie-ingress
+  annotations:
+    spec.ingressClassName: nginx
+spec:
+  rules:
+  - host: dsmovie.io
+    http:
+        paths:
+          - path: /?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: dsmovie-frontend-service
+                port: 
+                  number: 80
+          - path: /api/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: dsmovie-backend
+                port: 
+                  number: 8080

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  dsmovie-svc
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: dsmovie-svc
+  template:
+    metadata:
+      labels:
+        app:  dsmovie-svc
+    spec:
+      containers:
+        - name:  dsmovie-backend
+          image: horstgab/dsmovie-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://10.224.0.6:5432/postgresdb?useSSL=false
+            - name: DB_USERNAME
+              value: postgresadmin
+            - name: DB_PASSWORD
+              value: admin123
+            - name: DB_DDL_AUTO
+              value: create
