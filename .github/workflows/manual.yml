@@ -1,0 +1,36 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  push:
+    branches: ["main"]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4.1.1
+    
+    - name: autenticacao do Docker Hub
+      uses: docker/login-action@v3.0.0
+      with:
+        username: horstgab
+        password: ${{secrets.DOCKERHUB_PASS}}
+    
+    - name: Construção da imagem Docker
+      uses: docker/build-push-action@v5.0.0
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile
+        push: true
+        tags: |
+          horstgab/dsmovie-backend:${{github.run_number}}
+          horstgab/dsmovie-backend:latest
+    
+      
+    
